@@ -1,18 +1,13 @@
-// using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-// namespace BookApp.Models
-// {
-//     public class PriceOffer
-//     {
-//         [Key]
-//         [Required]
-//         public int PriceOfferId { get; set; }
-//         public decimal NewPrice { get; set; }
-//         public string PromotionalText { get; set; }
-
-//         //-----------------------------------------------
-//         //Relationships
-
-//         public int BookId { get; set; } //#b
-//     }
-// }
+namespace BookApp.Models
+{
+    public class PriceOffer
+    {
+        public int PriceOfferId { get; set; }
+        public decimal NewPrice { get; set; }
+        public string PromotionalText { get; set; } = null!;
+        public int BookId { get; set; }
+        public Book Book { get; set; } = null!;
+    }
+}

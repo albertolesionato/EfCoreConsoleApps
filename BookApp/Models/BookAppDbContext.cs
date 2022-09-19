@@ -6,21 +6,28 @@ namespace BookApp.Models
     {
 
         private const string ConnectionString =
-            @"Server=(localdb)\MSSQLLocalDB;
+            // @"Server=(localdb)\MSSQLLocalDB;
+            // Database=BookAppDb;
+            // Trusted_Connection=True;";
+            @"Server=127.0.0.1;
             Database=BookAppDb;
-            Trusted_Connection=True;";
-        public DbSet<Book> Books => Set<Book>();
+            User Id=postgres;";
 
-        // public DbSet<Author> Authors { get; set; }
-        // public DbSet<Tag> Tags { get; set; }
-        // public DbSet<PriceOffer> PriceOffers { get; set; }
+        public DbSet<Book> Books => Set<Book>();
+        public DbSet<PriceOffer> PriceOffers => Set<PriceOffer>();
+        public DbSet<Tag> Tags => Set<Tag>();
+        public DbSet<Author> Authors => Set<Author>();
+        public DbSet<Review> Reviews => Set<Review>();
+
 
         protected override void OnConfiguring(
                 DbContextOptionsBuilder optionsBuilder
             )
         {
+            // optionsBuilder
+            //     .UseSqlServer(ConnectionString);
             optionsBuilder
-                .UseSqlServer(ConnectionString);
+                .UseNpgsql(ConnectionString);
         }
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder) {

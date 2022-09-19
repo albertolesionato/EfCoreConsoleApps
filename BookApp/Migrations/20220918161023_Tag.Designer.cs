@@ -3,6 +3,7 @@ using System;
 using BookApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookApp.Migrations
 {
     [DbContext(typeof(BookAppDbContext))]
-    partial class BookAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220918161023_Tag")]
+    partial class Tag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,23 +23,6 @@ namespace BookApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("BookApp.Models.Author", b =>
-                {
-                    b.Property<int>("AuthorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuthorId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("AuthorId");
-
-                    b.ToTable("Authors");
-                });
 
             modelBuilder.Entity("BookApp.Models.Book", b =>
                 {
@@ -71,32 +56,6 @@ namespace BookApp.Migrations
                     b.HasKey("BookId");
 
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("BookApp.Models.BookAuthor", b =>
-                {
-                    b.Property<int>("BookAuthorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookAuthorId"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
-                    b.Property<byte>("Order")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("BookAuthorId");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookAuthor");
                 });
 
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
@@ -149,7 +108,7 @@ namespace BookApp.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("BookApp.Models.Tag", b =>
@@ -159,7 +118,7 @@ namespace BookApp.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("BookTag", b =>
@@ -175,25 +134,6 @@ namespace BookApp.Migrations
                     b.HasIndex("TagsTagId");
 
                     b.ToTable("BookTag");
-                });
-
-            modelBuilder.Entity("BookApp.Models.BookAuthor", b =>
-                {
-                    b.HasOne("BookApp.Models.Author", "Author")
-                        .WithMany("BooksLink")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookApp.Models.Book", "Book")
-                        .WithMany("AuthorsLink")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
@@ -233,15 +173,8 @@ namespace BookApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BookApp.Models.Author", b =>
-                {
-                    b.Navigation("BooksLink");
-                });
-
             modelBuilder.Entity("BookApp.Models.Book", b =>
                 {
-                    b.Navigation("AuthorsLink");
-
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

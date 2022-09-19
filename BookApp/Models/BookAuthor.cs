@@ -1,21 +1,13 @@
-// using System.ComponentModel.DataAnnotations;
 
-// namespace BookApp.Models
-// {
-//     public class BookAuthor
-//     {
-//         [Key]
-//         [Required]
-        
-//         public int BookAuthorId { get; set; } //#H
-//         public int BookId { get; set; } //#H
-//         public int AuthorId { get; set; } //#H
-//         public byte Order { get; set; } //#I
-
-//         //-----------------------------
-//         //Relationships
-
-//         public ICollection<Book> Book { get; set; } //#J
-//         public ICollection<Author> Author { get; set; } //#K
-//     }
-// }
+namespace BookApp.Models
+{
+    public class BookAuthor
+    {
+        public int BookAuthorId { get; set; }
+        public int BookId { get; set; }
+        public int AuthorId { get; set; }
+        public byte Order { get; set; }
+        public Book Book { get; set; } = null!;
+        public Author Author { get; set; } = null!;
+    }
+}
