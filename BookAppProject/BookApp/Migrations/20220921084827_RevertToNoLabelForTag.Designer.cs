@@ -3,6 +3,7 @@ using System;
 using BookApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookApp.Migrations
 {
     [DbContext(typeof(BookAppDbContext))]
-    partial class BookAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220921084827_RevertToNoLabelForTag")]
+    partial class RevertToNoLabelForTag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,7 +121,8 @@ namespace BookApp.Migrations
 
                     b.HasKey("PriceOfferId");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BookId")
+                        .IsUnique();
 
                     b.ToTable("PriceOffers");
                 });
@@ -199,8 +202,8 @@ namespace BookApp.Migrations
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
                 {
                     b.HasOne("BookApp.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
+                        .WithOne("Promotion")
+                        .HasForeignKey("BookApp.Models.PriceOffer", "BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -241,6 +244,8 @@ namespace BookApp.Migrations
             modelBuilder.Entity("BookApp.Models.Book", b =>
                 {
                     b.Navigation("AuthorsLink");
+
+                    b.Navigation("Promotion");
 
                     b.Navigation("Reviews");
                 });

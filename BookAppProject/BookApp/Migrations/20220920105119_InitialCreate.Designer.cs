@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookApp.Migrations
 {
     [DbContext(typeof(BookAppDbContext))]
-    [Migration("20220918161935_BookAuthor")]
-    partial class BookAuthor
+    [Migration("20220920105119_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace BookApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("AuthorBookAuthor", b =>
-                {
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BooksLinkBookAuthorId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AuthorId", "BooksLinkBookAuthorId");
-
-                    b.HasIndex("BooksLinkBookAuthorId");
-
-                    b.ToTable("AuthorBookAuthor");
-                });
 
             modelBuilder.Entity("BookApp.Models.Author", b =>
                 {
@@ -109,6 +94,10 @@ namespace BookApp.Migrations
 
                     b.HasKey("BookAuthorId");
 
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookId");
+
                     b.ToTable("BookAuthor");
                 });
 
@@ -162,7 +151,7 @@ namespace BookApp.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("BookApp.Models.Tag", b =>
@@ -173,21 +162,6 @@ namespace BookApp.Migrations
                     b.HasKey("TagId");
 
                     b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("BookBookAuthor", b =>
-                {
-                    b.Property<int>("AuthorsLinkBookAuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AuthorsLinkBookAuthorId", "BookId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookBookAuthor");
                 });
 
             modelBuilder.Entity("BookTag", b =>
@@ -205,19 +179,23 @@ namespace BookApp.Migrations
                     b.ToTable("BookTag");
                 });
 
-            modelBuilder.Entity("AuthorBookAuthor", b =>
+            modelBuilder.Entity("BookApp.Models.BookAuthor", b =>
                 {
-                    b.HasOne("BookApp.Models.Author", null)
-                        .WithMany()
+                    b.HasOne("BookApp.Models.Author", "Author")
+                        .WithMany("BooksLink")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookApp.Models.BookAuthor", null)
-                        .WithMany()
-                        .HasForeignKey("BooksLinkBookAuthorId")
+                    b.HasOne("BookApp.Models.Book", "Book")
+                        .WithMany("AuthorsLink")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
@@ -242,21 +220,6 @@ namespace BookApp.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("BookBookAuthor", b =>
-                {
-                    b.HasOne("BookApp.Models.BookAuthor", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsLinkBookAuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookApp.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BookTag", b =>
                 {
                     b.HasOne("BookApp.Models.Book", null)
@@ -272,8 +235,15 @@ namespace BookApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BookApp.Models.Author", b =>
+                {
+                    b.Navigation("BooksLink");
+                });
+
             modelBuilder.Entity("BookApp.Models.Book", b =>
                 {
+                    b.Navigation("AuthorsLink");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

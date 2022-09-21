@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookApp.Migrations
 {
     [DbContext(typeof(BookAppDbContext))]
-    [Migration("20220918162343_Fixed")]
-    partial class Fixed
+    [Migration("20220921073902_NoChangesIThink")]
+    partial class NoChangesIThink
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -121,7 +121,8 @@ namespace BookApp.Migrations
 
                     b.HasKey("PriceOfferId");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BookId")
+                        .IsUnique();
 
                     b.ToTable("PriceOffers");
                 });
@@ -201,8 +202,8 @@ namespace BookApp.Migrations
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
                 {
                     b.HasOne("BookApp.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
+                        .WithOne("Promotion")
+                        .HasForeignKey("BookApp.Models.PriceOffer", "BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -243,6 +244,8 @@ namespace BookApp.Migrations
             modelBuilder.Entity("BookApp.Models.Book", b =>
                 {
                     b.Navigation("AuthorsLink");
+
+                    b.Navigation("Promotion");
 
                     b.Navigation("Reviews");
                 });

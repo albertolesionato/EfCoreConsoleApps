@@ -11,7 +11,8 @@ namespace BookApp.Models
             // Trusted_Connection=True;";
             @"Server=127.0.0.1;
             Database=BookAppDb;
-            User Id=postgres;";
+            User Id=postgres;
+            Password=postgres";
 
         public DbSet<Book> Books => Set<Book>();
         public DbSet<PriceOffer> PriceOffers => Set<PriceOffer>();
