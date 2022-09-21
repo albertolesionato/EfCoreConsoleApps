@@ -1,4 +1,4 @@
-﻿
+﻿#pragma warning disable CS8321
 
 static void eagerLoading(BookAppDbContext context)
 {
@@ -8,8 +8,8 @@ static void eagerLoading(BookAppDbContext context)
     firstBook = context.Books.Include(book => book.Reviews)
         .AsNoTracking()
         .First();
-    //Console.WriteLine(book.Reviews.First().Comment);
-    //Console.WriteLine(book.Tags == null);
+    //Console.WriteLine(firstBook.Reviews.First().Comment);
+    //Console.WriteLine(firstBook.Tags == null);
 
     // Eager loading of the Book class and all the related data
     firstBook = context.Books
@@ -20,8 +20,8 @@ static void eagerLoading(BookAppDbContext context)
         .Include(book => book.Promotion)
         .AsNoTracking()
         .First();
-    //Console.WriteLine(book.AuthorsLink.First().Order);
-    //Console.WriteLine(book.Tags.First().TagId);
+    //Console.WriteLine(firstBook.AuthorsLink.First().Order);
+    //Console.WriteLine(firstBook.Tags.First().TagId);
 
     // Sorting and filtering when using Include or ThenInclude
     firstBook = context.Books
@@ -33,7 +33,7 @@ static void eagerLoading(BookAppDbContext context)
         .Include(book => book.Promotion)
         .AsNoTracking()
         .First();
-    Console.WriteLine(firstBook.Reviews.First().Comment);
+    //Console.WriteLine(firstBook.Reviews.First().Comment);
 
 
 
@@ -54,11 +54,12 @@ static void explicitLoading(BookAppDbContext context) {
         .Collection(book => book.Tags).Load();
     context.Entry(firstBook)
         .Reference(book => book.Promotion).Load();
+    Console.WriteLine(firstBook.Tags.First().TagId);
 }
 
 using (var context = new BookAppDbContext())
 {
-    eagerLoading(context);
+    //eagerLoading(context);
     explicitLoading(context);
 
 }
