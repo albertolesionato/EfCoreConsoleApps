@@ -8,7 +8,7 @@ VALUES('Someone who writes');
 
 INSERT INTO public."BookAuthor"
 ("BookId", "AuthorId", "Order")
-VALUES(1, 1, 1500);
+VALUES(1, 1, 1);
 
 INSERT INTO public."Reviews"
 ("VoterName", "NumStars", "Comment", "BookId")
@@ -17,5 +17,10 @@ VALUES('John', 5, 'I have not read it', 1);
 INSERT INTO public."Tags"
 ("TagId")
 VALUES('Useless');
+
+INSERT INTO public."BookTag"
+("BooksBookId", "TagsTagId")
+VALUES(1, 'Useless');
+
 
 
