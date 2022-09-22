@@ -6,9 +6,17 @@ INSERT INTO public."Authors"
 ("Name")
 VALUES('Someone who writes');
 
+INSERT INTO public."Authors"
+("Name")
+VALUES('Someone who smiles');
+
 INSERT INTO public."BookAuthor"
 ("BookId", "AuthorId", "Order")
 VALUES(1, 1, 1);
+
+INSERT INTO public."BookAuthor"
+("BookId", "AuthorId", "Order")
+VALUES(1, 2, 2);
 
 INSERT INTO public."Reviews"
 ("VoterName", "NumStars", "Comment", "BookId")
@@ -21,6 +29,4 @@ VALUES('Useless');
 INSERT INTO public."BookTag"
 ("BooksBookId", "TagsTagId")
 VALUES(1, 'Useless');
-
-
 

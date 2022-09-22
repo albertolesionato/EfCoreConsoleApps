@@ -40,9 +40,9 @@ static void eagerLoading(BookAppDbContext context)
 }
 
 static void explicitLoading(BookAppDbContext context) {
-    Book firstBook;
+    Book firstBook = context.Books.First();
 
-    firstBook = context.Books.First();
+    // Explicit loading of the Book class and related data
     context.Entry(firstBook)
         .Collection(book => book.AuthorsLink).Load();
     foreach (var authorLink in firstBook.AuthorsLink) {
@@ -54,12 +54,51 @@ static void explicitLoading(BookAppDbContext context) {
         .Collection(book => book.Tags).Load();
     context.Entry(firstBook)
         .Reference(book => book.Promotion).Load();
-    Console.WriteLine(firstBook.Tags.First().TagId);
+    // Console.WriteLine(firstBook.Tags.First().TagId);
+
+    // Explicit loading of the Book class with a refined set of related data
+    var numReviews = context.Entry(firstBook)
+        .Collection(book => book.Reviews)
+        .Query().Count();
+    Console.WriteLine(numReviews);
+
+    var starsRating = context.Entry(firstBook)
+        .Collection(book => book.Reviews)
+        .Query().Select(review => review.NumStars)
+        .ToList();
+    Console.WriteLine(starsRating.First());
+    Console.WriteLine(firstBook.Reviews.Count == 0);
+}
+
+static void selectLoading(BookAppDbContext context) {
+    var books = context.Books
+        .Select(book => new {
+            book.Title,
+            book.Price,
+            NumReviews
+                = book.Reviews.Count
+        }).ToList();
+    Console.WriteLine(books.First().NumReviews);
+}
+
+static void clientVsServerSideEvaluation(BookAppDbContext context) {
+    var firstBook = context.Books
+        .Select(book => new {
+            book.BookId,
+            book.Title,
+            AuthorsString = string.Join(", ", 
+                book.AuthorsLink
+                .OrderBy(ba => ba.Order)
+                .Select(ba => ba.Author.Name))
+        }).First();
+    Console.WriteLine(firstBook.AuthorsString);
 }
 
 using (var context = new BookAppDbContext())
 {
     //eagerLoading(context);
-    explicitLoading(context);
+    //explicitLoading(context);
+    //selectLoading(context);
+    clientVsServerSideEvaluation(context);
 
 }
