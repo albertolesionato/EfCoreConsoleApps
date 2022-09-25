@@ -1,1 +1,1 @@
-Credit: Entity Framework Core in Action, Second Edition by Jon P Smith 
+Source: Entity Framework Core in Action, Second Edition by Jon P Smith 

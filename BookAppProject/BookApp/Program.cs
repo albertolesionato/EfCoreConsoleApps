@@ -94,11 +94,27 @@ static void clientVsServerSideEvaluation(BookAppDbContext context) {
     Console.WriteLine(firstBook.AuthorsString);
 }
 
+// The code to produce a list of the years when books are published
+static void yearsWhenBooksArePublished(BookAppDbContext context) {
+    var result = context.Books
+        .Where(x => x.PublishedOn <= DateTime.UtcNow.Date)
+        .Select(x => x.PublishedOn.Year.ToString())
+        .Distinct()
+        .OrderByDescending(x => x)
+        .ToList();
+
+    var commingSoon = context.Books
+        .Any(x => x.PublishedOn > DateTime.UtcNow.Date);
+    if (commingSoon) {
+        result.Insert(0, "Comming soon");
+    }
+}
+
 using (var context = new BookAppDbContext())
 {
     //eagerLoading(context);
     //explicitLoading(context);
     //selectLoading(context);
-    clientVsServerSideEvaluation(context);
+    // clientVsServerSideEvaluation(context);
 
 }
