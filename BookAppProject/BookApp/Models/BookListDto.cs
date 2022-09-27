@@ -1,4 +1,6 @@
 
+namespace BookApp.Models;
+
 public class BookListDto {
     public int BookId { get; set; }
     public string Title { get; set; } = null!;

@@ -1,10 +1,9 @@
 
-namespace BookApp.Models
+namespace BookApp.Models;
+
+public class Author
 {
-    public class Author
-    {
-        public int AuthorId { get; set; }
-        public string Name { get; set; } = null!;
-        public ICollection<BookAuthor> BooksLink { get; set; } = null!;
-    }
+    public int AuthorId { get; set; }
+    public string Name { get; set; } = null!;
+    public ICollection<BookAuthor> BooksLink { get; set; } = null!;
 }

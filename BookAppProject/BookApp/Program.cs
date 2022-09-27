@@ -106,15 +106,15 @@ static void yearsWhenBooksArePublished(BookAppDbContext context) {
     var commingSoon = context.Books
         .Any(x => x.PublishedOn > DateTime.UtcNow.Date);
     if (commingSoon) {
-        result.Insert(0, "Comming soon");
+        result.Insert(0, BookListDtoFilter.AllBooksNotPublishedString);
     }
 }
 
 using (var context = new BookAppDbContext())
 {
-    //eagerLoading(context);
-    //explicitLoading(context);
-    //selectLoading(context);
+    // eagerLoading(context);
+    // explicitLoading(context);
+    // selectLoading(context);
     // clientVsServerSideEvaluation(context);
 
 }
