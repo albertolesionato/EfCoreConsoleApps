@@ -111,7 +111,7 @@ static void yearsWhenBooksArePublished(BookAppDbContext context) {
 }
 
 // Adding a Book entity class also adds any linked entity classes
-static void AddBookAndReview(BookAppDbContext context) {
+static void addBookAndReview(BookAppDbContext context) {
     var book = new Book
     {
         Title = "Test Book",
@@ -131,12 +131,70 @@ static void AddBookAndReview(BookAppDbContext context) {
     context.SaveChanges();
 }
 
+// Adding a Book with an existing Author
+static void addingBookToExistingAuthor(BookAppDbContext context) {
+    var foundAuthor = context.Authors
+        .SingleOrDefault(author => author.Name == "Someone who writes");
+    if (foundAuthor == null) {
+        throw new Exception("Author not found");
+    }
+
+    var book = new Book
+    {
+        Title = "Test Book",
+        PublishedOn = DateTime.UtcNow,
+        Publisher = "Manning"
+    };
+    book.AuthorsLink = new List<BookAuthor>
+    {
+        new BookAuthor
+        {
+            Book = book,
+            Author = foundAuthor
+        }
+    };
+
+    context.Add(book);
+    context.SaveChanges();
+}
+
+static void updatingBook(BookAppDbContext context) {
+    var book = context.Books
+            .SingleOrDefault(p =>
+                p.Title == "Test Book");
+    if (book == null) { 
+        throw new Exception("Book not found");
+    }
+
+    book.PublishedOn = DateTime.UtcNow;
+    context.SaveChanges();
+}
+
+static void invokeStoredProcedure(BookAppDbContext context) {
+    var result = context.Books.FromSqlRaw($"EXECUTE dbo.GetBookById 1 ")
+        .AsNoTracking()
+        .ToList();
+    Console.WriteLine(result[0].Title);
+}
+
+static void relationalFixupDemo(BookAppDbContext context) {
+    var book = context.Books
+        .Single(x => x.BookId == 1);
+    Console.WriteLine(book.Reviews.Count);
+    var reviews = context.Set<Review>()
+        .Where(x => x.BookId == 1).ToList();
+    Console.WriteLine(book.Reviews.Count);
+}
+
 using (var context = new BookAppDbContext())
 {
     // eagerLoading(context);
     // explicitLoading(context);
     // selectLoading(context);
     // clientVsServerSideEvaluation(context);
-    AddBookAndReview(context);
-
+    // addBookAndReview(context);
+    // addingBookToExistingAuthor(context);
+    // updatingBook(context);
+    // invokeStoredProcedure(context);
+    relationalFixupDemo(context);
 }

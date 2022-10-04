@@ -5,9 +5,9 @@ public class BookAppDbContext : DbContext
 {
 
     private const string ConnectionString =
-        // @"Server=(localdb)\MSSQLLocalDB;
-        // Database=BookAppDb;
-        // Trusted_Connection=True;";
+         //@"Server=(localdb)\MSSQLLocalDB;
+         //Database=BookAppDb;
+         //Trusted_Connection=True;";
         @"Server=127.0.0.1;
             Database=BookAppDb;
             User Id=postgres;
@@ -24,8 +24,8 @@ public class BookAppDbContext : DbContext
             DbContextOptionsBuilder optionsBuilder
         )
     {
-        // optionsBuilder
-        //     .UseSqlServer(ConnectionString);
+        //optionsBuilder
+        //    .UseSqlServer(ConnectionString);
         optionsBuilder
             .UseNpgsql(ConnectionString);
     }
