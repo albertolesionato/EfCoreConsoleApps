@@ -110,11 +110,33 @@ static void yearsWhenBooksArePublished(BookAppDbContext context) {
     }
 }
 
+// Adding a Book entity class also adds any linked entity classes
+static void AddBookAndReview(BookAppDbContext context) {
+    var book = new Book
+    {
+        Title = "Test Book",
+        PublishedOn = DateTime.UtcNow,
+        Publisher = "Moneer AlKatib",
+        Reviews = new List<Review>() {
+            new Review
+            {
+                NumStars = 5,
+                Comment = "Great test book!",
+                VoterName = "Mr U Test"
+            }
+        }
+    };
+
+    context.Add(book);
+    context.SaveChanges();
+}
+
 using (var context = new BookAppDbContext())
 {
     // eagerLoading(context);
     // explicitLoading(context);
     // selectLoading(context);
     // clientVsServerSideEvaluation(context);
+    AddBookAndReview(context);
 
 }
