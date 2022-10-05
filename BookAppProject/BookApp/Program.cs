@@ -196,5 +196,5 @@ using (var context = new BookAppDbContext())
     // addingBookToExistingAuthor(context);
     // updatingBook(context);
     // invokeStoredProcedure(context);
-    relationalFixupDemo(context);
+    // relationalFixupDemo(context);
 }
